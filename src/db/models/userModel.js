@@ -1,11 +1,10 @@
 const db = require("./connection.js");
 
-function createUser(user) {
-
-    //LEMBRAR DE VERIFICAR
-    //SE JÁ EXISTE USUÁRIO COM
-    //ESSE EMAIL
-
+async function createUser(user) {
+    if(await getUser(user)) {
+        return false
+    }
+    
     const name = user.name;
     const email = user.email;
     const password = user.password;
@@ -15,6 +14,8 @@ function createUser(user) {
     db.run(query, [name, email, password], (err) => {
         if(err) throw err;
     })
+
+    return true
 }
 
 function deleteUser(user) {
